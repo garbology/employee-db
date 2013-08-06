@@ -33,8 +33,7 @@ var employeeProvider = new EmployeeProvider('localhost', 27017);
 
 // Routes
 
-//app.get('/', routes.index);
-//
+// View all employees
 app.get('/', function(req, res) {
   employeeProvider.findAll(function(error, emps) {
     res.render('index', {
@@ -42,15 +41,16 @@ app.get('/', function(req, res) {
       employees:emps
     });
   });
-
 });
 
+// Form to create a new employee
 app.get('/employee/new', function(req, res) {
   res.render('employee_new', {
     title: 'New Employee'
   });
 });
 
+// Save the new employee
 app.post('/employee/new', function(req, res) {
   employeeProvider.save({
     title: req.param('title'),
@@ -58,7 +58,20 @@ app.post('/employee/new', function(req, res) {
   }, function(error, docs) {
     res.redirect('/');
   });
+});
 
+// Update an employee
+app.get('/employee/:id/edit', function(req, res) {
+  employeeProvider.findById(req.param('_id'), function(error, employee) {
+    res.render('employee_edit', {employee: employee});
+  });
+});
+
+// Save updated employee
+app.post('employee/:id/edit', function(req, res) {
+  employeeProvider.update(req.param('_id'), {title: req.param('title'), name: req.param('name')}, function(error, docs) {
+    res.redirect('/');
+  });
 });
 
 
