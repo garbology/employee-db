@@ -68,7 +68,7 @@ app.get('/employee/:id/edit', function(req, res) {
 });
 
 // Save updated employee
-app.post('employee/:id/edit', function(req, res) {
+app.post('/employee/:id/edit', function(req, res) {
   employeeProvider.update(req.param('_id'), {title: req.param('title'), name: req.param('name')}, function(error, docs) {
     res.redirect('/');
   });
